@@ -22,6 +22,7 @@ public class HeslingtonHustle extends ApplicationAdapter {
 		batch.draw(img, 0, 0);
 		batch.end();
 		System.out.println("hello");
+		System.out.println("please");
 	}
 	
 	@Override
