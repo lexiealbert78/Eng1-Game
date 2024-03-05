@@ -86,19 +86,16 @@ public class HeslingtonHustle extends ApplicationAdapter {
 		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		camera.update();
 
-
-		// Set the batch's projection matrix to the camera's combined matrix
-		//batch.setProjectionMatrix(camera.combined);
-
 		//camera follow player
 		camera.position.x = player.getX() +player.getWidth()/2;
 		camera.position.y = player.getY() + player.getHeight()/2;
 		camera.update();
+		// Set the batch's projection matrix to the camera's combined matrix
 		batch.setProjectionMatrix(camera.combined);
 
 		//render map
 		batch.begin();
-		batch.draw(backgroundTexture, -250, -250, 2000, 2000);
+		batch.draw(backgroundTexture, -250, -1200, 2000, 2000);
 		batch.end();
 
 		boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
