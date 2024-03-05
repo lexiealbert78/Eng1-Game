@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
 public class HeslingtonHustle extends ApplicationAdapter {
 	private Viewport viewport;
@@ -64,7 +64,7 @@ public class HeslingtonHustle extends ApplicationAdapter {
 
 		//creating player from the Rectangle class
 		player = new Rectangle();
-		player.x = 800 / 2 - 64 / 2;
+		player.x = (float) 800 / 2 - (float) 64 / 2;
 		player.y = 200;
 		player.width = 64;
 		player.height = 64;
