@@ -3,14 +3,21 @@ package com.mygdx.hustle;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.concurrent.TimeUnit;
 
 public class HeslingtonHustle extends ApplicationAdapter {
+	private Viewport viewport;
+	private Camera camera;
+
 	SpriteBatch batch;
 	private Rectangle player;
 	//Textures for each player movement and direction the player is facing
@@ -33,7 +40,14 @@ public class HeslingtonHustle extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+
 		batch = new SpriteBatch();
+
+		// Initialize the camera and viewport
+		camera = new OrthographicCamera();
+		viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+
+
 		//initialising each texture with image of avatar moving
 		stillMan = new Texture(Gdx.files.internal("still man.png"));
 		leftForward = new Texture(Gdx.files.internal("left forward.png"));
@@ -54,11 +68,25 @@ public class HeslingtonHustle extends ApplicationAdapter {
 		player.y = 200;
 		player.width = 64;
 		player.height = 64;
+
+		// Set the camera's initial position
+		camera.position.set(player.x + player.width / 2, player.y + player.height / 2, 0);
+		camera.update();
+
+
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 0.5f, 0, 1);
+		// Update the viewport and camera
+		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		camera.update();
+
+
+		// Set the batch's projection matrix to the camera's combined matrix
+		batch.setProjectionMatrix(camera.combined);
+
 		boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
 				Gdx.input.isKeyPressed(Input.Keys.UP) ||
 				Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
