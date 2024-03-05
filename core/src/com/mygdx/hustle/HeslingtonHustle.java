@@ -37,9 +37,12 @@ public class HeslingtonHustle extends ApplicationAdapter {
 	private Texture rightFootRight;
 	//timer used for walking animation
 	private float animationTimer = 0;
+	private Texture backgroundTexture;
 	
 	@Override
 	public void create () {
+		//map background
+		backgroundTexture = new Texture("map.png");
 
 		batch = new SpriteBatch();
 
@@ -85,7 +88,18 @@ public class HeslingtonHustle extends ApplicationAdapter {
 
 
 		// Set the batch's projection matrix to the camera's combined matrix
+		//batch.setProjectionMatrix(camera.combined);
+
+		//camera follow player
+		camera.position.x = player.getX() +player.getWidth()/2;
+		camera.position.y = player.getY() + player.getHeight()/2;
+		camera.update();
 		batch.setProjectionMatrix(camera.combined);
+
+		//render map
+		batch.begin();
+		batch.draw(backgroundTexture, -250, -250, 2000, 2000);
+		batch.end();
 
 		boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
 				Gdx.input.isKeyPressed(Input.Keys.UP) ||
