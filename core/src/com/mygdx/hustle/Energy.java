@@ -25,6 +25,11 @@ public class Energy {
 
     }
 
+    // Reset the energy bar to its maximum value
+    public void resetEnergy() {
+        this.currentEnergy = this.maxEnergy;
+    }
+
     public void setCurrentEnergy(float currentEnergy) {
         this.currentEnergy = currentEnergy;
     }
@@ -54,6 +59,21 @@ public class Energy {
         shapeRenderer.rect(x + 1, y + 1, energyBarWidth, height-2); // Draw the energy bar
 
 
+    }
+
+    public void decrementEnergy(){
+        // Decrement energy level
+        float newEnergyLevel = this.getCurrentEnergy() - 12.0f;
+        // Ensure energy level doesn't go below zero
+        newEnergyLevel = Math.max(newEnergyLevel, 0);
+        this.setCurrentEnergy(newEnergyLevel);
+    }
+
+    public void drawBar(ShapeRenderer shapeRenderer){
+        shapeRenderer.setAutoShapeType(true);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        this.draw(shapeRenderer);
+        shapeRenderer.end();
     }
 
 }
