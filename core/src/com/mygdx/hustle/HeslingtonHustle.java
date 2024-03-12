@@ -95,7 +95,7 @@ public class HeslingtonHustle extends ApplicationAdapter {
 
 		//render map
 		batch.begin();
-		batch.draw(backgroundTexture, -250, -1200, 2250, 2250);
+		batch.draw(backgroundTexture, -550, -2100, 3000, 3000);
 		batch.end();
 
 		boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
