@@ -87,7 +87,7 @@ public class HeslingtonHustle extends ApplicationAdapter {
 		camera.update();
 
 		//camera follow player
-		camera.position.x = player.getX() +player.getWidth()/2;
+		camera.position.x = player.getX() + player.getWidth()/2;
 		camera.position.y = player.getY() + player.getHeight()/2;
 		camera.update();
 		// Set the batch's projection matrix to the camera's combined matrix
@@ -95,7 +95,7 @@ public class HeslingtonHustle extends ApplicationAdapter {
 
 		//render map
 		batch.begin();
-		batch.draw(backgroundTexture, -550, -2100, 3000, 3000);
+		batch.draw(backgroundTexture, -620, -2020, 3000, 3000);
 		batch.end();
 
 		boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
