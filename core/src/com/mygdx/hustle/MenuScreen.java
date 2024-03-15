@@ -3,6 +3,7 @@ package com.mygdx.hustle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -12,12 +13,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MenuScreen implements Screen {
-	private HeslingtonHustle parent;
-	private Stage stage;
-	public MenuScreen(HeslingtonHustle heslingtonHustle){
+	private final HeslingtonHustle parent;
+	private final Stage stage;
+
+    public MenuScreen(final HeslingtonHustle heslingtonHustle){
 		parent=heslingtonHustle;
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
+
+        OrthographicCamera camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
 	}
 
 	@Override
@@ -33,7 +38,7 @@ public class MenuScreen implements Screen {
 		//create buttons
 		TextButton newGame = new TextButton("New Game",skin);
 		TextButton preferences = new TextButton("Preferences",skin);
-		TextButton exit = new TextButton("exit",skin);
+		TextButton exit = new TextButton("Exit",skin);
 
 		//put buttons into the table
 		table.add(newGame).fillX().uniformX();
@@ -41,6 +46,7 @@ public class MenuScreen implements Screen {
 		table.add(preferences).fillX().uniformX();
 		table.row();
 		table.add(exit).fillX().uniformX();
+		stage.addActor(table);
 
 		//button listeners
 		exit.addListener(new ChangeListener(){
@@ -52,13 +58,14 @@ public class MenuScreen implements Screen {
 		preferences.addListener(new ChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor){
-				//parent.changeScreen(HeslingtonHustle.GAME);
+				parent.setScreen(new GameScreen(parent));
+				dispose();
 			}
 		});
 		newGame.addListener(new ChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor){
-				//parent.changeScreen(HeslingtonHustle.GAME); //PREFERENCES
+				parent.setScreen(new GameScreen(parent)); //PREFERENCES
 			}
 		});
 	}

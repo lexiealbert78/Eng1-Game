@@ -12,46 +12,34 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 //import java.util.concurrent.TimeUnit;
 
-interface constnt{
-    //constant to store whether the main menu has been loaded or not yet
-    boolean initiallyLoaded=false;
-}
-
 public class GameScreen implements Screen {
-    HeslingtonHustle game;
-
-    private MenuScreen menuScreen;
-    //private com.mygdx.hustle.HeslingtonHustle game;
-    public final static int MENU=0;
-    public final static int PREFERENCES=1;
-    public final static int GAME=2;
-    public final static int ENDGAME=3;
-    private Viewport viewport;
-    private Camera camera;
+    private final HeslingtonHustle parent;
+    private final Viewport viewport;
+    private final Camera camera;
 
     SpriteBatch batch;
-    private Rectangle player;
+    private final Rectangle player;
     //Textures for each player movement and direction the player is facing
     //leftForward is left foot first, walking forward
     //rightBack is right foot first, walking backwards
-    private Texture stillMan;
-    private Texture leftForward;
-    private Texture rightForward;
-    private Texture stillBack;
-    private Texture leftBack;
-    private Texture rightBack;
-    private Texture stillLeft;
-    private Texture leftFootLeft;
-    private Texture rightFootLeft;
-    private Texture stillRight;
-    private Texture leftFootRight;
-    private Texture rightFootRight;
+    private final Texture stillMan;
+    private final Texture leftForward;
+    private final Texture rightForward;
+    private final Texture stillBack;
+    private final Texture leftBack;
+    private final Texture rightBack;
+    private final Texture stillLeft;
+    private final Texture leftFootLeft;
+    private final Texture rightFootLeft;
+    private final Texture stillRight;
+    private final Texture leftFootRight;
+    private final Texture rightFootRight;
     //timer used for walking animation
     private float animationTimer = 0;
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture;
 
-    public GameScreen(final HeslingtonHustle game) {
-        this.game = game;
+    public GameScreen(final HeslingtonHustle heslingtonHustle) {
+        parent = heslingtonHustle;
 
         //map background
         backgroundTexture = new Texture("map.png");
@@ -89,24 +77,8 @@ public class GameScreen implements Screen {
         camera.update();
     }
 
-//    public void changeScreen(int screen){
-//        switch(screen){
-//            case MENU:
-//                if(menuScreen==null) menuScreen = new MenuScreen(this);
-//                //this.setScreen(menuScreen);
-//                //case PREFERENCES:
-//                //	if(preferencesScreen==null) preferencesScreen = new preferencesScreen(this);
-//                // 	this.setScreen(preferencesScreen);
-//            case GAME:
-//                if(game==null) game=new com.mygdx.hustle.HeslingtonHustle();
-//                //this.setScreen(game);
-//                //case ENDGAME:
-//                //	if(endScreen==null) endScreen = new endScreen(this);
-//                //	this.setScreen(endScreen);
-//        }
-//    }
-
-    public void render () {
+    @Override
+    public void render (float delta) {
         ScreenUtils.clear(0, 0.5f, 0, 1);
         // Update the viewport and camera
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -274,11 +246,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
 
     }
 
