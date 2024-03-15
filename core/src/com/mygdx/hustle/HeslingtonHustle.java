@@ -16,7 +16,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.concurrent.TimeUnit;
 
 public class HeslingtonHustle extends ApplicationAdapter {
-
+	///////////////////////////////////////////////////////////////////////////////////
+	private Viewport viewport;
+	private Camera camera;
+	private Texture backgroundTexture;
+	SpriteBatch batch;
+	/////////////////////////////////////////////////////////////////////////////////////
 	Player player;
 
 	private ShapeRenderer shapeRenderer;
@@ -28,9 +33,24 @@ public class HeslingtonHustle extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		//creating player from the Player class
-		player = new Player();
+		///////////////////////////////MAP//////////////////////////////////////////
+		batch = new SpriteBatch();
+		//map background
+		batch.begin();
+		backgroundTexture = new Texture("map.png");
+		// Initialize the camera and viewport
+		camera = new OrthographicCamera();
+		viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+		batch.end();
 
+		//////////////////////////////PLAYER, ENERGY BAR CREATION/////////////////////////////////////////////
+
+		//creating player from the Player class
+		player = new Player(batch);
+
+		// Set the camera's initial position
+		camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
+		camera.update();
 
 		shapeRenderer = new ShapeRenderer();
 		energy = new Energy(50, 50, 200, 20, 100); // Adjust position, size, and max energy as needed
@@ -39,17 +59,29 @@ public class HeslingtonHustle extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0, 0, 1);
+		ScreenUtils.clear(0, 0.5f, 0, 1);
+		///////////////////////////CAMERA/////////////////////////////////////////////////////
+		// Update the viewport and camera
+		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		camera.update();
 
-		// Update the day timer
-		if(dayTimer.update(Gdx.graphics.getDeltaTime())){
-			//end of day
-			energy.resetEnergy();
-			//possibly reset screen, move character position back to home
+		//camera follow player
+		camera.position.x = player.getX() +player.getWidth()/2;
+		camera.position.y = player.getY() + player.getHeight()/2;
+		camera.update();
+		// Set the batch's projection matrix to the camera's combined matrix
+		batch.setProjectionMatrix(camera.combined);
 
-		}
-		//dayTimer.update(Gdx.graphics.getDeltaTime());
+		//render map
+		batch.begin();
+		batch.draw(backgroundTexture, -250, -1200, 2250, 2250);
+		batch.end();
+		//////////////////////////////END OF DAY//////////////////////////////////////////////////
+
+		dayTimer.update(Gdx.graphics.getDeltaTime(), energy);
 		dayTimer.renderDayNumber(); // Render the day number above the energy bar
+
+		//////////////////////////////INTERACTIONS//////////////////////////////////////////////////////////////
 
 		// Update the energy bar's current energy level (example: decrease energy with each interaction)
 		if(Gdx.input.isKeyPressed(Input.Keys.ENTER) && !enterPressed){
@@ -63,20 +95,22 @@ public class HeslingtonHustle extends ApplicationAdapter {
 		}
 		energy.drawBar(shapeRenderer);
 
+		//////////////////////////////MOVEMENT//////////////////////////////////////////////////////////////////
+
 		boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
 				Gdx.input.isKeyPressed(Input.Keys.UP) ||
 				Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
 				Gdx.input.isKeyPressed(Input.Keys.RIGHT));
 
 		if (noArrowKeyPressed) {
-			player.idle();
+			player.idle(batch);
 		}
 
 		//reading the arrow keys and moving the character
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) player.moveDown(Gdx.graphics.getDeltaTime());
-		else if(Gdx.input.isKeyPressed(Input.Keys.UP)) player.moveUp(Gdx.graphics.getDeltaTime());
-		else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) player.moveLeft(Gdx.graphics.getDeltaTime());
-		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) player.moveRight(Gdx.graphics.getDeltaTime());
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) player.moveDown(Gdx.graphics.getDeltaTime(), batch);
+		else if(Gdx.input.isKeyPressed(Input.Keys.UP)) player.moveUp(Gdx.graphics.getDeltaTime(), batch);
+		else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) player.moveLeft(Gdx.graphics.getDeltaTime(), batch);
+		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) player.moveRight(Gdx.graphics.getDeltaTime(), batch);
 
 
 	}

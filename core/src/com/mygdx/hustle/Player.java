@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Player extends Rectangle {
-    SpriteBatch batch;
+
     //Textures for each player movement and direction the player is facing
     //leftForward is left foot first, walking forward
     //rightBack is right foot first, walking backwards
@@ -31,9 +31,9 @@ public class Player extends Rectangle {
     private float animationTimer = 0;
 
     // Constructor
-    public Player() {
-        x = 800 / 2 - 64 / 2;
-        y=200;
+    public Player(SpriteBatch batch) {
+        x = Gdx.graphics.getWidth() / 2 - 64 / 2;
+        y=Gdx.graphics.getHeight() / 2 - 64 / 2; ;
         width = 64;
         height = 64;
         batch = new SpriteBatch();
@@ -58,13 +58,13 @@ public class Player extends Rectangle {
 
 
 
-    public void idle(){
+    public void idle(SpriteBatch batch){
         batch.begin();
         batch.draw(stillMan, this.x, this.y);
         batch.end();
     }
     // Move Down
-    public void moveDown(float deltaTime) {
+    public void moveDown(float deltaTime, SpriteBatch batch) {
         // walkingSpeed variable
         float walkingSpeed = 200;
 
@@ -93,7 +93,7 @@ public class Player extends Rectangle {
         }
     }
     // Move up
-    public void moveUp(float deltaTime) {
+    public void moveUp(float deltaTime, SpriteBatch batch) {
 
         // walkingSpeed variable
         float walkingSpeed = 200;
@@ -122,7 +122,7 @@ public class Player extends Rectangle {
             animationTimer = 0;
         }
     }
-    public void moveLeft(float deltaTime) {
+    public void moveLeft(float deltaTime, SpriteBatch batch) {
 
         // walkingSpeed variable
         float walkingSpeed = 200;
@@ -151,7 +151,7 @@ public class Player extends Rectangle {
             animationTimer = 0;
         }
     }
-    public void moveRight(float deltaTime) {
+    public void moveRight(float deltaTime, SpriteBatch batch) {
 
         // walkingSpeed variable
         float walkingSpeed = 200;
@@ -190,5 +190,9 @@ public class Player extends Rectangle {
     public float getY() {
         return y;
     }
+
+    public float getHeight() { return height;}
+
+    public float getWidth() {return width;}
 
 }
