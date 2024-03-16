@@ -17,7 +17,6 @@ public class GameScreen implements Screen {
     private final Viewport viewport;
     private final Camera camera;
 
-    //TODO make sprite batch passed between all classes
     SpriteBatch batch;
 
     //from lexie's version
@@ -37,11 +36,11 @@ public class GameScreen implements Screen {
         //map background
         backgroundTexture = new Texture("map.png");
 
+        //creating player from the Player class
         batch = new SpriteBatch();
         batch.begin();
-
-        //creating player from the Player class
         player = new Player(batch);
+        batch.end();
 
         // Set the camera's initial position
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
