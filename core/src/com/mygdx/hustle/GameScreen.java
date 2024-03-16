@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -17,25 +17,16 @@ public class GameScreen implements Screen {
     private final Viewport viewport;
     private final Camera camera;
 
+    //TODO make sprite batch passed between all classes
     SpriteBatch batch;
-    private final Rectangle player;
-    //Textures for each player movement and direction the player is facing
-    //leftForward is left foot first, walking forward
-    //rightBack is right foot first, walking backwards
-    private final Texture stillMan;
-    private final Texture leftForward;
-    private final Texture rightForward;
-    private final Texture stillBack;
-    private final Texture leftBack;
-    private final Texture rightBack;
-    private final Texture stillLeft;
-    private final Texture leftFootLeft;
-    private final Texture rightFootLeft;
-    private final Texture stillRight;
-    private final Texture leftFootRight;
-    private final Texture rightFootRight;
-    //timer used for walking animation
-    private float animationTimer = 0;
+
+    //from lexie's version
+    Player player;
+    private final Energy energy;
+    private final ShapeRenderer shapeRenderer;
+    // Define a boolean flag to track if the button was previously pressed
+    private boolean enterPressed = false;
+    private final DayTimer dayTimer = new DayTimer();
     private final Texture backgroundTexture;
 
     public GameScreen(final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam) {
@@ -47,32 +38,17 @@ public class GameScreen implements Screen {
         backgroundTexture = new Texture("map.png");
 
         batch = new SpriteBatch();
+        batch.begin();
 
-
-        //initialising each texture with image of avatar moving
-        stillMan = new Texture(Gdx.files.internal("still man.png"));
-        leftForward = new Texture(Gdx.files.internal("left forward.png"));
-        rightForward = new Texture(Gdx.files.internal("right forward.png"));
-        stillBack = new Texture(Gdx.files.internal("still back.png"));
-        leftBack = new Texture(Gdx.files.internal("left back.png"));
-        rightBack = new Texture(Gdx.files.internal("right back.png"));
-        stillLeft = new Texture(Gdx.files.internal("still left.png"));
-        leftFootLeft = new Texture(Gdx.files.internal("leftFoot left.png"));
-        rightFootLeft = new Texture(Gdx.files.internal("rightFoot left.png"));
-        stillRight = new Texture(Gdx.files.internal("still right.png"));
-        leftFootRight = new Texture(Gdx.files.internal("leftFoot right.png"));
-        rightFootRight = new Texture(Gdx.files.internal("rightFoot right.png"));
-
-        //creating player from the Rectangle class
-        player = new Rectangle();
-        player.x = (float) 800 / 2 - (float) 64 / 2;
-        player.y = 200;
-        player.width = 64;
-        player.height = 64;
+        //creating player from the Player class
+        player = new Player(batch);
 
         // Set the camera's initial position
-        camera.position.set(player.x + player.width / 2, player.y + player.height / 2, 0);
+        camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
         camera.update();
+
+        shapeRenderer = new ShapeRenderer();
+        energy = new Energy(50, 50, 200, 20, 100); // Adjust position, size, and max energy as needed
     }
 
     @Override
@@ -94,151 +70,48 @@ public class GameScreen implements Screen {
         batch.draw(backgroundTexture, -620, -2020, 3000, 3000);
         batch.end();
 
+        //////////////////////////////END OF DAY//////////////////////////////////////////////////
+
+        dayTimer.update(Gdx.graphics.getDeltaTime(), energy);
+        dayTimer.renderDayNumber(); // Render the day number above the energy bar
+
+        //////////////////////////////INTERACTIONS//////////////////////////////////////////////////////////////
+
+        // Update the energy bar's current energy level (example: decrease energy with each interaction)
+        if(Gdx.input.isKeyPressed(Input.Keys.ENTER) && !enterPressed){
+            energy.decrementEnergy();
+            enterPressed = true; //Sets flag so button cannot be held and all energy used
+        }
+
+        // Reset the flag when Enter is released
+        if (!Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            enterPressed = false;
+        }
+        energy.drawBar(shapeRenderer);
+
+        //////////////////////////////MOVEMENT//////////////////////////////////////////////////////////////////
+
         boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
                 Gdx.input.isKeyPressed(Input.Keys.UP) ||
                 Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.RIGHT));
 
         if (noArrowKeyPressed) {
-            batch.begin();
-            batch.draw(stillMan, player.x, player.y);
-            batch.end();
+            player.idle(batch);
         }
 
         //reading the arrow keys and moving the character
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) moveDown();
-        else if(Gdx.input.isKeyPressed(Input.Keys.UP)) moveUp();
-        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) moveLeft();
-        else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) moveRight();
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) player.moveDown(Gdx.graphics.getDeltaTime(), batch);
+        else if(Gdx.input.isKeyPressed(Input.Keys.UP)) player.moveUp(Gdx.graphics.getDeltaTime(), batch);
+        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) player.moveLeft(Gdx.graphics.getDeltaTime(), batch);
+        else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) player.moveRight(Gdx.graphics.getDeltaTime(), batch);
 
 
-    }
-
-    public void moveDown() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        // Assuming you have a walkingSpeed variable
-        float walkingSpeed = 200;
-
-        // Update the player's position based on deltaTime and walkingSpeed
-        player.y -= walkingSpeed * deltaTime;
-
-        batch.begin();
-
-        // Draw the appropriate frame based on the walking animation
-        if (animationTimer < 0.2) {
-            batch.draw(leftForward, player.x, player.y);
-        } else if (animationTimer < 0.4) {
-            batch.draw(stillMan, player.x, player.y);
-        } else {
-            batch.draw(rightForward, player.x, player.y);
-        }
-
-        batch.end();
-
-        // Increment the animation timer
-        animationTimer += deltaTime;
-
-        // Reset the animation timer if it exceeds the total animation time
-        if (animationTimer > 0.6) {
-            animationTimer = 0;
-        }
-    }
-    public void moveUp() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        // walkingSpeed variable
-        float walkingSpeed = 200;
-
-        // Update the player's position based on deltaTime and walkingSpeed
-        player.y += walkingSpeed * deltaTime;
-
-        batch.begin();
-
-        // Draw the appropriate frame based on the walking animation
-        if (animationTimer < 0.2) {
-            batch.draw(leftBack, player.x, player.y);
-        } else if (animationTimer < 0.4) {
-            batch.draw(stillBack, player.x, player.y);
-        } else {
-            batch.draw(rightBack, player.x, player.y);
-        }
-
-        batch.end();
-
-        // Increment the animation timer
-        animationTimer += deltaTime;
-
-        // Reset the animation timer if it exceeds the total animation time
-        if (animationTimer > 0.6) {
-            animationTimer = 0;
-        }
-    }
-    public void moveLeft() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        // walkingSpeed variable
-        float walkingSpeed = 200;
-
-        // Update the player's position based on deltaTime and walkingSpeed
-        player.x -= walkingSpeed * deltaTime;
-
-        batch.begin();
-
-        // Draw the appropriate frame based on the walking animation
-        if (animationTimer < 0.2) {
-            batch.draw(leftFootLeft, player.x, player.y);
-        } else if (animationTimer < 0.4) {
-            batch.draw(stillLeft, player.x, player.y);
-        } else {
-            batch.draw(rightFootLeft, player.x, player.y);
-        }
-
-        batch.end();
-
-        // Increment the animation timer
-        animationTimer += deltaTime;
-
-        // Reset the animation timer if it exceeds the total animation time
-        if (animationTimer > 0.6) {
-            animationTimer = 0;
-        }
-    }
-    public void moveRight() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        // walkingSpeed variable
-        float walkingSpeed = 200;
-
-        // Update the player's position based on deltaTime and walkingSpeed
-        player.x += walkingSpeed * deltaTime;
-
-        batch.begin();
-
-        // Draw the appropriate frame based on the walking animation
-        if (animationTimer < 0.2) {
-            batch.draw(leftFootRight, player.x, player.y);
-        } else if (animationTimer < 0.4) {
-            batch.draw(stillRight, player.x, player.y);
-        } else {
-            batch.draw(rightFootRight, player.x, player.y);
-        }
-
-        batch.end();
-
-        // Increment the animation timer
-        animationTimer += deltaTime;
-
-        // Reset the animation timer if it exceeds the total animation time
-        if (animationTimer > 0.6) {
-            animationTimer = 0;
-        }
     }
 
     @Override
     public void dispose () {
         batch.dispose();
-        stillMan.dispose();
     }
 
 

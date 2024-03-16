@@ -8,9 +8,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 public class HeslingtonHustle extends Game {
 
 	SpriteBatch batch;
+
 	@Override
-	public void create () {
-		batch=new SpriteBatch();
+	public void create() {
+		batch = new SpriteBatch();
 		OrthographicCamera camera = new OrthographicCamera();
 		ExtendViewport viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 		this.setScreen(new MenuScreen(this, viewport, camera));
