@@ -4,25 +4,34 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class MenuScreen implements Screen {
 	private final HeslingtonHustle parent;
 	private final Stage stage;
+	private final Texture backgroundTexture;
+	private final ExtendViewport viewport;
+	private final OrthographicCamera camera;
 
-    public MenuScreen(final HeslingtonHustle heslingtonHustle){
+    public MenuScreen(final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam){
 		parent=heslingtonHustle;
-		stage=new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
+		viewport=view;
+		camera=cam;
 
-        OrthographicCamera camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		backgroundTexture = new Texture("menu.png");
+
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		stage=new Stage(viewport);
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -30,7 +39,6 @@ public class MenuScreen implements Screen {
 		//create a table to fill the screen, then everything else can fit inside
 		Table table = new Table();
 		table.setFillParent(true);
-		table.setDebug(true);
 
 		//TODO implement ui skin
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -41,11 +49,15 @@ public class MenuScreen implements Screen {
 		TextButton exit = new TextButton("Exit",skin);
 
 		//put buttons into the table
-		table.add(newGame).fillX().uniformX();
-		table.row().pad(10,0,10,0);
-		table.add(preferences).fillX().uniformX();
+		table.add(newGame).fillX().width(200).height(50);
+		table.row().pad(40,0,40,0);
+		table.add(preferences).fillX().width(200).height(50);
 		table.row();
-		table.add(exit).fillX().uniformX();
+		table.add(exit).fillX().width(200).height(50);
+
+		//final table edits
+		TextureRegionDrawable textureRegionDrawableBg = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+		table.setBackground(textureRegionDrawableBg);
 		stage.addActor(table);
 
 		//button listeners
@@ -58,14 +70,14 @@ public class MenuScreen implements Screen {
 		preferences.addListener(new ChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor){
-				parent.setScreen(new GameScreen(parent));
+				parent.setScreen(new GameScreen(parent, viewport, camera));
 				dispose();
 			}
 		});
 		newGame.addListener(new ChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor){
-				parent.setScreen(new GameScreen(parent)); //PREFERENCES
+				parent.setScreen(new GameScreen(parent, viewport, camera)); //PREFERENCES
 			}
 		});
 	}
@@ -73,7 +85,7 @@ public class MenuScreen implements Screen {
 	@Override
 	public void render(float delta){
 		//clear screen
-		Gdx.gl.glClearColor(0f,0f,0f,1);
+		//Gdx.gl.glClearColor(50/255f, 80/255f, 230/255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(),1/30f));

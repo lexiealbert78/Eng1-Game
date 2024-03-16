@@ -38,17 +38,15 @@ public class GameScreen implements Screen {
     private float animationTimer = 0;
     private final Texture backgroundTexture;
 
-    public GameScreen(final HeslingtonHustle heslingtonHustle) {
+    public GameScreen(final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam) {
         parent = heslingtonHustle;
+        viewport=view;
+        camera=cam;
 
         //map background
         backgroundTexture = new Texture("map.png");
 
         batch = new SpriteBatch();
-
-        // Initialize the camera and viewport
-        camera = new OrthographicCamera();
-        viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
 
         //initialising each texture with image of avatar moving
