@@ -24,12 +24,18 @@ public class HeslingtonHustle extends ApplicationAdapter {
 	/////////////////////////////////////////////////////////////////////////////////////
 	Player player;
 
+
 	private ShapeRenderer shapeRenderer;
 	private Energy energy;
 	// Define a boolean flag to track if the button was previously pressed
 	private boolean enterPressed = false;
 
 	private DayTimer dayTimer = new DayTimer();
+	private Score score = new Score();
+
+	private AccommodationBuilding accommodationBuilding = new AccommodationBuilding(-100,350,600,550);
+	private RecreationBuilding recreationBuilding = new RecreationBuilding(600, -700, 500, 400);
+
 	
 	@Override
 	public void create () {
@@ -85,7 +91,17 @@ public class HeslingtonHustle extends ApplicationAdapter {
 
 		// Update the energy bar's current energy level (example: decrease energy with each interaction)
 		if(Gdx.input.isKeyPressed(Input.Keys.ENTER) && !enterPressed){
-			energy.decrementEnergy();
+			//check if overlapping any buildings
+
+			if(accommodationBuilding.checkOverlaps(player)){
+				accommodationBuilding.interact(energy, dayTimer, score);
+			}
+
+			if(recreationBuilding.checkOverlaps(player)){
+				recreationBuilding.interact(energy, dayTimer, score);
+			}
+
+			//energy.decrementEnergy();
 			enterPressed = true; //Sets flag so button cannot be held and all energy used
 		}
 

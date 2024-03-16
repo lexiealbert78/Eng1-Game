@@ -1,5 +1,4 @@
 package com.mygdx.hustle;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -10,34 +9,36 @@ public class DayTimer {
     private SpriteBatch textBatch;
     private BitmapFont font;
     private Score score = new Score();
+    private boolean endOfDay;
 
 
     public boolean update(float deltaTime, Energy energy) {
+        endOfDay = false;
         // Increment elapsed time
         elapsedTime += deltaTime;
 
         // Check if the day is over
         if (elapsedTime >= DAY_DURATION || energy.getCurrentEnergy() == 0) {
             renderSleepReminder();
-            //not allowed any other interactions but sleep
-            //if(interaction with accommodation){
-            //   elapsedTime = 0.0f;
-            //   currentDay++;
-            //   energy.resetEnergy()
-            //   }
-
-            if (currentDay == 7){
-               score.renderFinalScores();
-            }
-            //game over
+            endOfDay = true;
             return true;
-
         }
         return false;
     }
 
     public int getCurrentDay() {
         return this.currentDay;
+    }
+
+    public void setCurrentDay(int currentDay) {
+        this.currentDay = currentDay;
+    }
+
+    public boolean getEndOfDay(){
+        return this.endOfDay;
+    }
+    public void setElapsedTime(float elapsedTime){
+        this.elapsedTime = elapsedTime;
     }
 
     public void renderDayNumber(){
