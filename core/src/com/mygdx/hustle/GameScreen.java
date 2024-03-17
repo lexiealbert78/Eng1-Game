@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -31,6 +32,8 @@ public class GameScreen implements Screen {
     private final AccommodationBuilding accommodationBuilding = new AccommodationBuilding(-100,350,600,550);
     private final RecreationBuilding recreationBuilding = new RecreationBuilding(600, -700, 500, 400);
     private final Texture backgroundTexture;
+    private final BitmapFont font = new BitmapFont();
+    SpriteBatch textBatch;
 
     public GameScreen(final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam) {
         parent = heslingtonHustle;
@@ -80,26 +83,55 @@ public class GameScreen implements Screen {
 
         //////////////////////////////INTERACTIONS//////////////////////////////////////////////////////////////
 
+        //set font color and scale
+        font.setColor(1, 1, 1, 1); // White color
+        font.getData().setScale(1.5f); // Scale factor 1.5
+
+        //draw interact text
+        if(accommodationBuilding.checkOverlaps(player)){
+            textBatch = new SpriteBatch();
+            textBatch.begin();
+            font.draw(textBatch, "Go to sleep?", (float) Gdx.graphics.getWidth() /2+50, (float) Gdx.graphics.getHeight() /2+50);
+            textBatch.end();
+        }
+
+        if(recreationBuilding.checkOverlaps(player)&&energy.getCurrentEnergy()>10) {
+            textBatch = new SpriteBatch();
+            textBatch.begin();
+            font.draw(textBatch, "Do recreational activity?", (float) Gdx.graphics.getWidth() /2+50, (float) Gdx.graphics.getHeight() /2+50);
+            textBatch.end();
+
+        }
+
+//        if(studyBuilding.checkOverlaps(player)&&energy.getCurrentEnergy()>25) {
+//            textBatch = new SpriteBatch();
+//            textBatch.begin();
+//            font.draw(textBatch, "Study?", (float) Gdx.graphics.getWidth() /2+50, (float) Gdx.graphics.getHeight() /2+50);
+//            textBatch.end();
+//        }
+
         // Update the energy bar's current energy level (example: decrease energy with each interaction)
         if(Gdx.input.isKeyPressed(Input.Keys.ENTER) && !enterPressed){
-            energy.decrementEnergy();
             enterPressed = true; //Sets flag so button cannot be held and all energy used
         }
 
         // Reset the flag when Enter is released
-        if (!Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+        if (!Gdx.input.isKeyPressed(Input.Keys.ENTER) && enterPressed) {
+            enterPressed = false;
+
             //check if overlapping any buildings
 
             if(accommodationBuilding.checkOverlaps(player)){
                 accommodationBuilding.interact(energy, dayTimer, score);
             }
 
-            if(recreationBuilding.checkOverlaps(player)){
+            if(recreationBuilding.checkOverlaps(player)) {
                 recreationBuilding.interact(energy, dayTimer, score);
             }
 
-            //energy.decrementEnergy();
-            enterPressed = false;
+//            if(studyBuilding.checkOverlaps(player)) {
+//                studyBuilding.interact(energy, dayTimer, score);
+//            }
         }
         energy.drawBar(shapeRenderer);
 

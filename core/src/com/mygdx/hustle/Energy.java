@@ -61,9 +61,9 @@ public class Energy {
 
     }
 
-    public void decrementEnergy(){
+    public void decrementEnergy(float amount){
         // Decrement energy level
-        float newEnergyLevel = this.getCurrentEnergy() - 12.0f;
+        float newEnergyLevel = this.getCurrentEnergy() - amount;
         // Ensure energy level doesn't go below zero
         newEnergyLevel = Math.max(newEnergyLevel, 0);
         this.setCurrentEnergy(newEnergyLevel);

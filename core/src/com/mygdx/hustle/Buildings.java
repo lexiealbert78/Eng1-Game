@@ -51,10 +51,25 @@ class RecreationBuilding extends Buildings{
     }
     @Override
     public void interact(Energy energy, DayTimer dayTimer, Score score) {
-        // Interaction logic specific to accommodation building
-        if(!dayTimer.getEndOfDay()){
-            energy.decrementEnergy();
+        // Interaction logic specific to recreational building
+        if(energy.getCurrentEnergy()>=10){
+            energy.decrementEnergy(10);
             score.incrementRecreation();
+        }
+    }
+
+}
+
+class StudyBuilding extends Buildings{
+    public StudyBuilding(float x, float y, float width, float height) {
+        super(x, y, width, height);
+    }
+    @Override
+    public void interact(Energy energy, DayTimer dayTimer, Score score) {
+        // Interaction logic specific to study building
+        if(energy.getCurrentEnergy()>=25){
+            energy.decrementEnergy(25);
+            score.incrementStudy();
         }
     }
 

@@ -12,7 +12,7 @@ public class DayTimer {
     private boolean endOfDay;
 
 
-    public boolean update(float deltaTime, Energy energy) {
+    public void update(float deltaTime, Energy energy) {
         endOfDay = false;
         // Increment elapsed time
         elapsedTime += deltaTime;
@@ -20,11 +20,9 @@ public class DayTimer {
         // Check if the day is over
         if (elapsedTime >= DAY_DURATION || energy.getCurrentEnergy() == 0) {
             renderSleepReminder();
+            energy.decrementEnergy(10000000);
             endOfDay = true;
-
-            return true;
         }
-        return false;
     }
 
     public int getCurrentDay() {
