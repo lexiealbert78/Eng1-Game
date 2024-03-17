@@ -31,8 +31,11 @@ public class Player extends Rectangle {
 
     // Constructor
     public Player(SpriteBatch batch) {
-        x = Gdx.graphics.getWidth() / 2 - 64 / 2;
-        y=Gdx.graphics.getHeight() / 2 - 64 / 2;
+        //x = Gdx.graphics.getWidth() /2 - 64/2;
+        //y=Gdx.graphics.getHeight() /2 - 64/2;
+
+        x=900;
+        y=-400;
         width = 64;
         height = 64;
         batch = new SpriteBatch();
@@ -62,6 +65,12 @@ public class Player extends Rectangle {
         batch.draw(stillMan, this.x, this.y);
         batch.end();
     }
+
+    public Rectangle returnBounds(){
+        Rectangle playerBounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        return playerBounds;
+    }
+
     // Move Down
     public void moveDown(float deltaTime, SpriteBatch batch) {
         // walkingSpeed variable

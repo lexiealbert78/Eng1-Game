@@ -5,36 +5,41 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class DayTimer {
     private static final float DAY_DURATION = 60.0f; // Duration of a day in seconds
     private float elapsedTime = 0.0f;// Elapsed time since the start of the day
-    private final int currentDay = 1; //start on day 1
+    private int currentDay = 1; //start on day 1
     private SpriteBatch textBatch;
     private BitmapFont font;
     private final Score score = new Score();
+    private boolean endOfDay;
 
 
-    public void update(float deltaTime, Energy energy) {
+    public boolean update(float deltaTime, Energy energy) {
+        endOfDay = false;
         // Increment elapsed time
         elapsedTime += deltaTime;
 
         // Check if the day is over
         if (elapsedTime >= DAY_DURATION || energy.getCurrentEnergy() == 0) {
             renderSleepReminder();
-            //not allowed any other interactions but sleep
-            //if(interaction with accommodation){
-            //   elapsedTime = 0.0f;
-            //   currentDay++;
-            //   energy.resetEnergy()
-            //   }
+            endOfDay = true;
 
-            if (currentDay == 7){
-               score.renderFinalScores();
-            }
-            //game over
-
+            return true;
         }
+        return false;
     }
 
     public int getCurrentDay() {
         return this.currentDay;
+    }
+
+    public void setCurrentDay(int currentDay) {
+        this.currentDay = currentDay;
+    }
+
+    public boolean getEndOfDay(){
+        return this.endOfDay;
+    }
+    public void setElapsedTime(float elapsedTime){
+        this.elapsedTime = elapsedTime;
     }
 
     public void renderDayNumber(){

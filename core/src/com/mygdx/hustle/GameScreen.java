@@ -26,6 +26,10 @@ public class GameScreen implements Screen {
     // Define a boolean flag to track if the button was previously pressed
     private boolean enterPressed = false;
     private final DayTimer dayTimer = new DayTimer();
+    private final Score score = new Score();
+
+    private final AccommodationBuilding accommodationBuilding = new AccommodationBuilding(-100,350,600,550);
+    private final RecreationBuilding recreationBuilding = new RecreationBuilding(600, -700, 500, 400);
     private final Texture backgroundTexture;
 
     public GameScreen(final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam) {
@@ -84,6 +88,17 @@ public class GameScreen implements Screen {
 
         // Reset the flag when Enter is released
         if (!Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            //check if overlapping any buildings
+
+            if(accommodationBuilding.checkOverlaps(player)){
+                accommodationBuilding.interact(energy, dayTimer, score);
+            }
+
+            if(recreationBuilding.checkOverlaps(player)){
+                recreationBuilding.interact(energy, dayTimer, score);
+            }
+
+            //energy.decrementEnergy();
             enterPressed = false;
         }
         energy.drawBar(shapeRenderer);
