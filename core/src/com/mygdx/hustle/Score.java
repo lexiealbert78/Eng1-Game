@@ -22,6 +22,24 @@ public class Score {
         return eatCounter++;
     }
 
+    public void renderScores(){
+        scoreBatch = new SpriteBatch();
+        font = new BitmapFont();
+        // Begin drawing with the sprite batch
+        scoreBatch.begin();
+
+        // Set font color and scale
+        font.setColor(1, 1, 1, 1); // White color
+        font.getData().setScale(1.5f); // Scale factor 1.5
+
+        // Draw the day number text
+        font.draw(scoreBatch, "Times Studied: " + studyCounter, 50, 240);
+        font.draw(scoreBatch, "Times eaten: "+ eatCounter, 50, 280);
+        font.draw(scoreBatch, "Times had fun: "+ recreationCounter, 50, 320);
+
+        scoreBatch.end();
+    }
+
     public void renderFinalScores(){
         ScreenUtils.clear(0, 0.5f, 0, 1);
         scoreBatch = new SpriteBatch();

@@ -37,6 +37,7 @@ class AccommodationBuilding extends Buildings{
         // Interaction logic specific to accommodation building
         dayTimer.setElapsedTime(0.0f);
         dayTimer.setCurrentDay(dayTimer.getCurrentDay()+1);
+        //last day
         if(dayTimer.getCurrentDay() == 7){
             score.renderFinalScores();
         }
@@ -60,24 +61,38 @@ class RecreationBuilding extends Buildings{
 
 }
 
-class StudyBuilding extends Buildings{
+class StudyBuilding extends Buildings {
     public StudyBuilding(float x, float y, float width, float height) {
         super(x, y, width, height);
     }
+
     @Override
     public void interact(Energy energy, DayTimer dayTimer, Score score) {
         // Interaction logic specific to study building
-        if(energy.getCurrentEnergy()>=25){
+        if (energy.getCurrentEnergy() >= 25) {
             energy.decrementEnergy(25);
             score.incrementStudy();
         }
     }
-
+}
+class EatBuilding extends Buildings {
+    public EatBuilding(float x, float y, float width, float height) {
+        super(x, y, width, height);
+    }
+    private float timeLastEaten = -100;
+    @Override
+    public void interact(Energy energy, DayTimer dayTimer, Score score) {
+        // Interaction logic specific to study building
+        // Must be more than 10 seconds since last eaten (unfinished feature)
+        if (energy.getCurrentEnergy() <= energy.getMaxEnergy()) {
+            //timeLastEaten = dayTimer.getElapsedTime();
+            energy.incrementEnergy(5);
+            score.incrementEat();
+        }
+    }
 }
 
 
-
-//eating conditions - ten seconds since last one, check it's not end of day (first check)
 
 
 

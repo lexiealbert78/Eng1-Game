@@ -30,6 +30,8 @@ public class Energy {
         this.currentEnergy = this.maxEnergy;
     }
 
+    public float getMaxEnergy(){ return this.maxEnergy;}
+
     public void setCurrentEnergy(float currentEnergy) {
         this.currentEnergy = currentEnergy;
     }
@@ -67,6 +69,13 @@ public class Energy {
         // Ensure energy level doesn't go below zero
         newEnergyLevel = Math.max(newEnergyLevel, 0);
         this.setCurrentEnergy(newEnergyLevel);
+    }
+
+    public void incrementEnergy(float amount){
+        //increment energy level
+        if (this.getCurrentEnergy() < maxEnergy){
+            this.setCurrentEnergy(this.getCurrentEnergy() + amount);
+        }
     }
 
     public void drawBar(ShapeRenderer shapeRenderer){

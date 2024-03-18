@@ -15,6 +15,11 @@ public class DayTimer {
 
     public void update(float deltaTime, Energy energy, final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam, final Score score) {
         endOfDay = false;
+        //check if game is over
+        if (currentDay>7) {
+            heslingtonHustle.setScreen(new EndScreen(heslingtonHustle, view, cam, score));
+        }
+
         // Increment elapsed time
         elapsedTime += deltaTime;
 
@@ -25,10 +30,7 @@ public class DayTimer {
             endOfDay = true;
         }
 
-        //check if game is over
-        if (currentDay>7) {
-            heslingtonHustle.setScreen(new EndScreen(heslingtonHustle, view, cam, score));
-        }
+
     }
 
     public int getCurrentDay() {
@@ -45,6 +47,7 @@ public class DayTimer {
     public void setElapsedTime(float elapsedTime){
         this.elapsedTime = elapsedTime;
     }
+    public float getElapsedTime(){ return this.elapsedTime; }
 
     public void renderDayNumber(){
         textBatch = new SpriteBatch();
@@ -57,7 +60,7 @@ public class DayTimer {
         font.getData().setScale(1.5f); // Scale factor 1.5
 
         // Draw the day number text
-        font.draw(textBatch, "Day " + currentDay, 50, 100);
+        font.draw(textBatch, "Day " + currentDay, 50, 150);
 
         textBatch.end();
     }
