@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -49,10 +50,11 @@ public class MenuScreen implements Screen {
 		TextButton exit = new TextButton("Exit",skin);
 
 		//put buttons into the table
+		table.row().pad(20,0,0,0);
 		table.add(newGame).fillX().width(200).height(50);
-		table.row().pad(40,0,40,0);
+		table.row().pad(20,0, 0,0);
 		table.add(preferences).fillX().width(200).height(50);
-		table.row();
+		table.row().pad(20,0, 0,0);
 		table.add(exit).fillX().width(200).height(50);
 
 		//final table edits

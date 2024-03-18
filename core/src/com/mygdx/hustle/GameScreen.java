@@ -1,7 +1,6 @@
 package com.mygdx.hustle;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,14 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 //import java.util.concurrent.TimeUnit;
 
 public class GameScreen implements Screen {
     private final HeslingtonHustle parent;
-    private final Viewport viewport;
-    private final Camera camera;
+    private final ExtendViewport viewport;
+    private final OrthographicCamera camera;
 
     SpriteBatch batch;
 
@@ -78,7 +76,7 @@ public class GameScreen implements Screen {
 
         //////////////////////////////END OF DAY//////////////////////////////////////////////////
 
-        dayTimer.update(Gdx.graphics.getDeltaTime(), energy);
+        dayTimer.update(Gdx.graphics.getDeltaTime(), energy, parent, viewport, camera, score);
         dayTimer.renderDayNumber(); // Render the day number above the energy bar
 
         //////////////////////////////INTERACTIONS//////////////////////////////////////////////////////////////

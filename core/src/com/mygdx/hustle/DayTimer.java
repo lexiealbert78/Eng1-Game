@@ -1,6 +1,8 @@
 package com.mygdx.hustle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class DayTimer {
     private static final float DAY_DURATION = 60.0f; // Duration of a day in seconds
@@ -8,11 +10,10 @@ public class DayTimer {
     private int currentDay = 1; //start on day 1
     private SpriteBatch textBatch;
     private BitmapFont font;
-    private final Score score = new Score();
     private boolean endOfDay;
 
 
-    public void update(float deltaTime, Energy energy) {
+    public void update(float deltaTime, Energy energy, final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam, final Score score) {
         endOfDay = false;
         // Increment elapsed time
         elapsedTime += deltaTime;
@@ -22,6 +23,11 @@ public class DayTimer {
             renderSleepReminder();
             energy.decrementEnergy(10000000);
             endOfDay = true;
+        }
+
+        //check if game is over
+        if (currentDay>7) {
+            heslingtonHustle.setScreen(new EndScreen(heslingtonHustle, view, cam, score));
         }
     }
 
