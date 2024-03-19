@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 public class DayTimer {
     private static final float DAY_DURATION = 60.0f; // Duration of a day in seconds
     private float elapsedTime = 0.0f;// Elapsed time since the start of the day
+    private float time;
     private int currentDay = 1; //start on day 1
     private SpriteBatch textBatch;
     private BitmapFont font;
@@ -20,8 +21,14 @@ public class DayTimer {
             heslingtonHustle.setScreen(new EndScreen(heslingtonHustle, view, cam, score));
         }
 
-        // Increment elapsed time
-        elapsedTime += deltaTime;
+        // Increment time
+        time += deltaTime;
+        elapsedTime+=deltaTime;
+
+        if (time>=0.285) {
+            energy.decrementEnergy(0.5f);
+            time=0;
+        }
 
         // Check if the day is over
         if (elapsedTime >= DAY_DURATION || energy.getCurrentEnergy() == 0) {

@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 //import java.util.concurrent.TimeUnit;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen{
     private final HeslingtonHustle parent;
     private final ExtendViewport viewport;
     private final OrthographicCamera camera;
@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
     private final EatBuilding eatBuilding = new EatBuilding(1525,-895,697,490);
     private final Texture backgroundTexture;
     private final BitmapFont font = new BitmapFont();
+    private final KeyboardController controller = new KeyboardController();
     SpriteBatch textBatch;
 
 
@@ -42,6 +43,8 @@ public class GameScreen implements Screen {
         viewport=view;
         camera=cam;
 
+        //controller
+        Gdx.input.setInputProcessor(controller);
 
         //map background
         backgroundTexture = new Texture("map.png");
@@ -156,24 +159,16 @@ public class GameScreen implements Screen {
 
             //////////////////////////////MOVEMENT//////////////////////////////////////////////////////////////////
 
-            boolean noArrowKeyPressed = !(Gdx.input.isKeyPressed(Input.Keys.DOWN) ||
-                    Gdx.input.isKeyPressed(Input.Keys.UP) ||
-                    Gdx.input.isKeyPressed(Input.Keys.LEFT) ||
-                    Gdx.input.isKeyPressed(Input.Keys.RIGHT));
-
-            if (noArrowKeyPressed) {
-                player.idle(batch);
-            }
-
-            //reading the arrow keys and moving the character
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) player.moveDown(Gdx.graphics.getDeltaTime(), batch);
-            else if (Gdx.input.isKeyPressed(Input.Keys.UP)) player.moveUp(Gdx.graphics.getDeltaTime(), batch);
-            else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) player.moveLeft(Gdx.graphics.getDeltaTime(), batch);
-            else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) player.moveRight(Gdx.graphics.getDeltaTime(), batch);
+            //TODO: add diagonal animations if you want when pressing two movement directions
+            //single button pressed
+            if (controller.up) player.moveUp(Gdx.graphics.getDeltaTime(), batch);
+            else if (controller.left) player.moveLeft(Gdx.graphics.getDeltaTime(), batch);
+            else if (controller.down) player.moveDown(Gdx.graphics.getDeltaTime(), batch);
+            else if (controller.right) player.moveRight(Gdx.graphics.getDeltaTime(), batch);
+            //idle
+            else player.idle(batch);
 
     }
-
-
 
     @Override
     public void dispose () {
@@ -205,4 +200,14 @@ public class GameScreen implements Screen {
     public void hide() {
 
     }
+
+//    @Override
+//    public boolean keyDown(int keycode) {
+//        //reading the keys and moving the character
+//        if (keycode == 37||keycode == 65) player.moveLeft(Gdx.graphics.getDeltaTime(), batch); //left=37, a=65
+//        else if (keycode == 38||keycode == 87) player.moveUp(Gdx.graphics.getDeltaTime(), batch); //up=38, w=87
+//        else if (keycode == 39||keycode == 68) player.moveRight(Gdx.graphics.getDeltaTime(), batch); //right=39, d=68
+//        else if (keycode == 40||keycode == 83) player.moveDown(Gdx.graphics.getDeltaTime(), batch); //down=40, s=83
+//        return false;
+//    }
 }

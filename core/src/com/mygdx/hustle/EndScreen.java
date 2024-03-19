@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -25,13 +27,16 @@ public class EndScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        score.renderFinalScores();
+
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        Stage stage = new Stage();
+        stage.draw();
+        score.renderFinalScores();
     }
 
     @Override

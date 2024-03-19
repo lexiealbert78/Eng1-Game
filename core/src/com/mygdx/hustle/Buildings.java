@@ -38,9 +38,9 @@ class AccommodationBuilding extends Buildings{
         dayTimer.setElapsedTime(0.0f);
         dayTimer.setCurrentDay(dayTimer.getCurrentDay()+1);
         //last day
-        if(dayTimer.getCurrentDay() == 7){
-            score.renderFinalScores();
-        }
+//        if(dayTimer.getCurrentDay() == 7){
+//            score.renderFinalScores();
+//        }
         energy.resetEnergy();
     }
 

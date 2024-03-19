@@ -1,5 +1,6 @@
 package com.mygdx.hustle;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -34,8 +35,8 @@ public class Score {
 
         // Draw the day number text
         font.draw(scoreBatch, "Times Studied: " + studyCounter, 50, 240);
-        font.draw(scoreBatch, "Times eaten: "+ eatCounter, 50, 280);
-        font.draw(scoreBatch, "Times had fun: "+ recreationCounter, 50, 320);
+        font.draw(scoreBatch, "Times Eaten: "+ eatCounter, 50, 280);
+        font.draw(scoreBatch, "Times had Fun: "+ recreationCounter, 50, 320);
 
         scoreBatch.end();
     }
@@ -49,13 +50,12 @@ public class Score {
 
         // Set font color and scale
         font.setColor(1, 1, 1, 1); // White color
-        font.getData().setScale(1.5f); // Scale factor 1.5
+        font.getData().setScale(2f); // Scale factor 1.5
 
         // Draw the day number text
-        font.draw(scoreBatch, "Times Studied: " + studyCounter, 50, 100);
-        font.draw(scoreBatch, "Times eaten: "+ eatCounter, 50, 100);
-        font.draw(scoreBatch, "Times had fun: "+ recreationCounter, 50, 100);
-
+        font.draw(scoreBatch, "Times Studied: " + studyCounter, (float) Gdx.graphics.getWidth() /2, (float) Gdx.graphics.getHeight() /2);
+        font.draw(scoreBatch, "Times Eaten: "+ eatCounter, (float) Gdx.graphics.getWidth() /2, (float) (Gdx.graphics.getHeight() /2)-50);
+        font.draw(scoreBatch, "Times had Fun: "+ recreationCounter, (float) Gdx.graphics.getWidth() /2, (float) (Gdx.graphics.getHeight() /2)-100);
         scoreBatch.end();
     }
 
