@@ -11,10 +11,20 @@ public class HeslingtonHustle extends Game {
 
 	@Override
 	public void create() {
-		batch = new SpriteBatch();
-		OrthographicCamera camera = new OrthographicCamera();
-		ExtendViewport viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-		this.setScreen(new MenuScreen(this, viewport, camera));
+		//for testing, change one of the values in the if statement to go straight to the end screen
+		if(1==1) {
+			batch = new SpriteBatch();
+			OrthographicCamera camera = new OrthographicCamera();
+			ExtendViewport viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+			this.setScreen(new MenuScreen(this, viewport, camera));
+		}
+		else {
+			batch = new SpriteBatch();
+			Score scor = new Score();
+			OrthographicCamera camera = new OrthographicCamera();
+			ExtendViewport viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+			this.setScreen(new EndScreen(this, viewport, camera, scor));
+		}
 	}
 
 	@Override

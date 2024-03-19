@@ -59,7 +59,7 @@ public class Energy {
         }
 
         shapeRenderer.rect(x + 1, y + 1, energyBarWidth, height-2); // Draw the energy bar
-
+//TODO energy bar scale when launching game ie resize screen and then press play to recreate.
 
     }
 

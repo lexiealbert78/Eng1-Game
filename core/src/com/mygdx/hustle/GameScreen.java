@@ -93,21 +93,21 @@ public class GameScreen implements Screen{
 
             //set font color and scale
             font.setColor(1, 1, 1, 1); // White color
-            font.getData().setScale(1.5f); // Scale factor 1.5
+            font.getData().setScale((float) (viewport.getScreenWidth() + viewport.getScreenHeight()) /1000);
 
 
             //draw interact text
             if (accommodationBuilding.checkOverlaps(player)) {
                 textBatch = new SpriteBatch();
                 textBatch.begin();
-                font.draw(textBatch, "Go to sleep?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
+                font.draw(textBatch, "Go to sleep?", (float) viewport.getScreenWidth() / 2+75, (float) viewport.getScreenHeight() / 2+50);
                 textBatch.end();
             }
 
             if (recreationBuilding.checkOverlaps(player) && energy.getCurrentEnergy() > 10) {
                 textBatch = new SpriteBatch();
                 textBatch.begin();
-                font.draw(textBatch, "Do recreational activity?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
+                font.draw(textBatch, "Do recreational activity?", (float) viewport.getScreenWidth() / 2+75, (float) viewport.getScreenHeight() / 2+50);
                 textBatch.end();
 
             }
@@ -115,14 +115,14 @@ public class GameScreen implements Screen{
             if (studyBuilding.checkOverlaps(player) && energy.getCurrentEnergy() > 25) {
                 textBatch = new SpriteBatch();
                 textBatch.begin();
-                font.draw(textBatch, "Study for a bit?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
+                font.draw(textBatch, "Study for a bit?", (float) viewport.getScreenWidth() / 2+75, (float) viewport.getScreenHeight() / 2+50);
                 textBatch.end();
             }
 
             if (eatBuilding.checkOverlaps(player)) {
                 textBatch = new SpriteBatch();
                 textBatch.begin();
-                font.draw(textBatch, "Eat a meal?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
+                font.draw(textBatch, "Eat a meal?", (float) viewport.getScreenWidth() / 2+75, (float) viewport.getScreenHeight() / 2+50);
                 textBatch.end();
             }
 
@@ -155,7 +155,7 @@ public class GameScreen implements Screen{
                 }
             }
             energy.drawBar(shapeRenderer);
-            score.renderScores();
+            score.renderScores(viewport);
 
             //////////////////////////////MOVEMENT//////////////////////////////////////////////////////////////////
 

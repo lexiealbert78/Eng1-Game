@@ -2,20 +2,15 @@ package com.mygdx.hustle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class EndScreen implements Screen {
     private final HeslingtonHustle parent;
-    private final Viewport viewport;
-    private final Camera camera;
+    private final ExtendViewport viewport;
+    private final OrthographicCamera camera;
     private final Score score;
 
     public EndScreen(HeslingtonHustle heslingtonHustle, ExtendViewport view, OrthographicCamera cam, Score scor) {
@@ -34,9 +29,12 @@ public class EndScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        camera.update();
+
         Stage stage = new Stage();
         stage.draw();
-        score.renderFinalScores();
+        score.renderFinalScores(viewport);
     }
 
     @Override

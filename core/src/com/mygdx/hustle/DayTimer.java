@@ -12,9 +12,11 @@ public class DayTimer {
     private SpriteBatch textBatch;
     private BitmapFont font;
     private boolean endOfDay;
+    private ExtendViewport viewport;
 
 
     public void update(float deltaTime, Energy energy, final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam, final Score score) {
+        viewport=view;
         endOfDay = false;
         //check if game is over
         if (currentDay>7) {
@@ -64,10 +66,10 @@ public class DayTimer {
 
         // Set font color and scale
         font.setColor(1, 1, 1, 1); // White color
-        font.getData().setScale(1.5f); // Scale factor 1.5
+        font.getData().setScale((float) (viewport.getScreenWidth() + viewport.getScreenHeight()) /1000); // Scale factor 1.5
 
         // Draw the day number text
-        font.draw(textBatch, "Day " + currentDay, 50, 150);
+        font.draw(textBatch, "Day " + currentDay, (float) viewport.getScreenWidth() /80, (float) viewport.getScreenHeight() /7);
 
         textBatch.end();
     }
@@ -80,10 +82,10 @@ public class DayTimer {
 
         // Set font color and scale
         font.setColor(1, 1, 1, 1); // White color
-        font.getData().setScale(1.5f); // Scale factor 1.5
+        font.getData().setScale((float) (viewport.getScreenWidth() + viewport.getScreenHeight()) /1000); // Scale factor 1.5
 
         // Draw the day number text
-        font.draw(textBatch, "That's all you can do today! You should get to sleep now.", 50, 130);
+        font.draw(textBatch, "That's all you can do today! You should get to sleep now.", 50, (float) viewport.getScreenHeight() /18);
 
         textBatch.end();
     }
