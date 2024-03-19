@@ -14,7 +14,7 @@ public class HeslingtonHustle extends Game {
 	@Override
 	public void create() {
 		//for testing, change one of the values in the if statement to go straight to the end screen
-		if(1==1) {
+		if(9==1) {
 			batch = new SpriteBatch();
 			OrthographicCamera camera = new OrthographicCamera();
 			ExtendViewport viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
