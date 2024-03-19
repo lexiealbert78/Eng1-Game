@@ -115,14 +115,14 @@ public class GameScreen implements Screen{
             if (studyBuilding.checkOverlaps(player) && energy.getCurrentEnergy() > 25) {
                 textBatch = new SpriteBatch();
                 textBatch.begin();
-                font.draw(textBatch, "Study?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
+                font.draw(textBatch, "Study for a bit?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
                 textBatch.end();
             }
 
-            if (eatBuilding.checkOverlaps(player) && energy.getCurrentEnergy() > 25) {
+            if (eatBuilding.checkOverlaps(player)) {
                 textBatch = new SpriteBatch();
                 textBatch.begin();
-                font.draw(textBatch, "Eat?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
+                font.draw(textBatch, "Eat a meal?", (float) Gdx.graphics.getWidth() / 2 + 50, (float) Gdx.graphics.getHeight() / 2 + 50);
                 textBatch.end();
             }
 

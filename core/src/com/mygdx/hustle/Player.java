@@ -28,12 +28,11 @@ public class Player extends Rectangle {
     private final Texture rightFootRight;
     //timer used for walking animation
     private float animationTimer = 0;
+    // walkingSpeed variable
+    private final float walkingSpeed = 250;
 
     // Constructor
     public Player(SpriteBatch batch) {
-        //x = Gdx.graphics.getWidth() /2 - 64/2;
-        //y=Gdx.graphics.getHeight() /2 - 64/2;
-
         x=900;
         y=-400;
         width = 64;
@@ -67,15 +66,11 @@ public class Player extends Rectangle {
     }
 
     public Rectangle returnBounds(){
-        Rectangle playerBounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        return playerBounds;
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
     // Move Down
     public void moveDown(float deltaTime, SpriteBatch batch) {
-        // walkingSpeed variable
-        float walkingSpeed = 200;
-
         // Update the player's position based on deltaTime and walkingSpeed
         this.y -= (int) (walkingSpeed * deltaTime);
 
@@ -102,10 +97,6 @@ public class Player extends Rectangle {
     }
     // Move up
     public void moveUp(float deltaTime, SpriteBatch batch) {
-
-        // walkingSpeed variable
-        float walkingSpeed = 200;
-
         // Update the player's position based on deltaTime and walkingSpeed
         this.y += (int) (walkingSpeed * deltaTime);
 
@@ -131,10 +122,6 @@ public class Player extends Rectangle {
         }
     }
     public void moveLeft(float deltaTime, SpriteBatch batch) {
-
-        // walkingSpeed variable
-        float walkingSpeed = 200;
-
         // Update the player's position based on deltaTime and walkingSpeed
         this.x -= (int) (walkingSpeed * deltaTime);
 
@@ -160,10 +147,6 @@ public class Player extends Rectangle {
         }
     }
     public void moveRight(float deltaTime, SpriteBatch batch) {
-
-        // walkingSpeed variable
-        float walkingSpeed = 200;
-
         // Update the player's position based on deltaTime and walkingSpeed
         this.x += (int) (walkingSpeed * deltaTime);
 

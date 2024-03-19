@@ -75,6 +75,8 @@ class StudyBuilding extends Buildings {
         }
     }
 }
+
+//TODO fix OVERPOWERED eat building
 class EatBuilding extends Buildings {
     public EatBuilding(float x, float y, float width, float height) {
         super(x, y, width, height);
