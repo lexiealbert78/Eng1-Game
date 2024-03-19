@@ -1,6 +1,7 @@
 package com.mygdx.hustle;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,6 +36,7 @@ public class GameScreen implements Screen{
     private final BitmapFont font = new BitmapFont();
     private final KeyboardController controller = new KeyboardController();
     SpriteBatch textBatch;
+    private final Music backgroundMusic;
 
 
 
@@ -61,6 +63,10 @@ public class GameScreen implements Screen{
 
         shapeRenderer = new ShapeRenderer();
         energy = new Energy(50, 50, 200, 20, 100); // Adjust position, size, and max energy as needed
+
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Background2.mp3"));
+        backgroundMusic.setLooping(true);
+        if (!parent.getMuted()) backgroundMusic.play();
     }
 
     @Override
@@ -85,7 +91,7 @@ public class GameScreen implements Screen{
 
             //////////////////////////////END OF DAY//////////////////////////////////////////////////
 
-            dayTimer.update(Gdx.graphics.getDeltaTime(), energy, parent, viewport, camera, score);
+            dayTimer.update(Gdx.graphics.getDeltaTime(), energy, parent, viewport, camera, score, backgroundMusic);
             dayTimer.renderDayNumber(); // Render the day number above the energy bar
 
 
@@ -119,7 +125,7 @@ public class GameScreen implements Screen{
                 textBatch.end();
             }
 
-            if (eatBuilding.checkOverlaps(player)) {
+            if (eatBuilding.checkOverlaps(player) && energy.getCurrentEnergy()!=0) {
                 textBatch = new SpriteBatch();
                 textBatch.begin();
                 font.draw(textBatch, "Eat a meal?", (float) viewport.getScreenWidth() / 2+75, (float) viewport.getScreenHeight() / 2+50);
@@ -161,11 +167,11 @@ public class GameScreen implements Screen{
 
             //TODO: add diagonal animations if you want when pressing two movement directions
             //single button pressed
-            if (controller.up) player.moveUp(Gdx.graphics.getDeltaTime(), batch);
-            else if (controller.left) player.moveLeft(Gdx.graphics.getDeltaTime(), batch);
-            else if (controller.down) player.moveDown(Gdx.graphics.getDeltaTime(), batch);
-            else if (controller.right) player.moveRight(Gdx.graphics.getDeltaTime(), batch);
-            //idle
+            if (controller.up && player.getY() < 700) player.moveUp(Gdx.graphics.getDeltaTime(), batch);
+            else if (controller.left && player.getX() > -173) player.moveLeft(Gdx.graphics.getDeltaTime(), batch);
+            else if (controller.down && player.getY() > -1810) player.moveDown(Gdx.graphics.getDeltaTime(), batch);
+            else if (controller.right && player.getX() < 1871) player.moveRight(Gdx.graphics.getDeltaTime(), batch);
+                //idle
             else player.idle(batch);
 
     }

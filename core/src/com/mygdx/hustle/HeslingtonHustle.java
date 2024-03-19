@@ -4,10 +4,12 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class HeslingtonHustle extends Game {
 
 	SpriteBatch batch;
+	private boolean muted;
 
 	@Override
 	public void create() {
@@ -25,6 +27,7 @@ public class HeslingtonHustle extends Game {
 			ExtendViewport viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 			this.setScreen(new EndScreen(this, viewport, camera, scor));
 		}
+		//to build ./gradlew desktop:dist in console
 	}
 
 	@Override
@@ -35,5 +38,13 @@ public class HeslingtonHustle extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
+	}
+
+	public boolean getMuted(){
+		return muted;
+	}
+
+	public void setMuted(boolean mute){
+		muted = mute;
 	}
 }

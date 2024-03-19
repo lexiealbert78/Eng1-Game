@@ -1,5 +1,6 @@
 package com.mygdx.hustle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -15,11 +16,12 @@ public class DayTimer {
     private ExtendViewport viewport;
 
 
-    public void update(float deltaTime, Energy energy, final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam, final Score score) {
+    public void update(float deltaTime, Energy energy, final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam, final Score score, Music music) {
         viewport=view;
         endOfDay = false;
         //check if game is over
         if (currentDay>7) {
+            music.stop();
             heslingtonHustle.setScreen(new EndScreen(heslingtonHustle, view, cam, score));
         }
 

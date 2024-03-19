@@ -1,6 +1,7 @@
 package com.mygdx.hustle;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,12 +13,17 @@ public class EndScreen implements Screen {
     private final ExtendViewport viewport;
     private final OrthographicCamera camera;
     private final Score score;
+    private final Music backgroundMusic;
 
     public EndScreen(HeslingtonHustle heslingtonHustle, ExtendViewport view, OrthographicCamera cam, Score scor) {
         parent = heslingtonHustle;
         viewport=view;
         camera=cam;
         score=scor;
+
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sleeping_Music.mp3"));
+        backgroundMusic.setLooping(true);
+        if (!parent.getMuted()) backgroundMusic.play();
     }
 
     @Override

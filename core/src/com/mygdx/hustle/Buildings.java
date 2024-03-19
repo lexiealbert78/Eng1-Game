@@ -86,7 +86,7 @@ class EatBuilding extends Buildings {
     public void interact(Energy energy, DayTimer dayTimer, Score score) {
         // Interaction logic specific to study building
         // Must be more than 10 seconds since last eaten (unfinished feature)
-        if (energy.getCurrentEnergy() <= energy.getMaxEnergy()) {
+        if (energy.getCurrentEnergy() <= energy.getMaxEnergy() && energy.getCurrentEnergy()!=0) {
             //timeLastEaten = dayTimer.getElapsedTime();
             energy.incrementEnergy(5);
             score.incrementEat();

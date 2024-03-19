@@ -2,6 +2,7 @@ package com.mygdx.hustle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +23,7 @@ public class MenuScreen implements Screen {
 	private final Texture backgroundTexture;
 	private final ExtendViewport viewport;
 	private final OrthographicCamera camera;
+	private final Music backgroundMusic;
 
     public MenuScreen(final HeslingtonHustle heslingtonHustle, final ExtendViewport view, final OrthographicCamera cam){
 		parent=heslingtonHustle;
@@ -33,6 +35,10 @@ public class MenuScreen implements Screen {
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage=new Stage(viewport);
 		Gdx.input.setInputProcessor(stage);
+
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sleeping_Music.mp3"));
+		backgroundMusic.setLooping(true);
+		backgroundMusic.play();
 	}
 
 	@Override
@@ -46,14 +52,14 @@ public class MenuScreen implements Screen {
 
 		//create buttons
 		TextButton newGame = new TextButton("New Game",skin);
-		TextButton preferences = new TextButton("Preferences",skin);
+		TextButton mute = new TextButton("Mute Music",skin);
 		TextButton exit = new TextButton("Exit",skin);
 
 		//put buttons into the table
 		table.row().pad(20,0,0,0);
 		table.add(newGame).fillX().width(200).height(50);
 		table.row().pad(20,0, 0,0);
-		table.add(preferences).fillX().width(200).height(50);
+		table.add(mute).fillX().width(200).height(50);
 		table.row().pad(20,0, 0,0);
 		table.add(exit).fillX().width(200).height(50);
 
@@ -69,17 +75,20 @@ public class MenuScreen implements Screen {
 				Gdx.app.exit();
 			}
 		});
-		preferences.addListener(new ChangeListener(){
+		mute.addListener(new ChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor){
-				parent.setScreen(new GameScreen(parent, viewport, camera));
-				dispose();
+				parent.setMuted(!parent.getMuted());//alternatively add PREFERENCES screen
+				if (parent.getMuted()) backgroundMusic.stop();
+				else backgroundMusic.play();
 			}
 		});
 		newGame.addListener(new ChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor){
-				parent.setScreen(new GameScreen(parent, viewport, camera)); //PREFERENCES
+				backgroundMusic.stop();
+				parent.setScreen(new GameScreen(parent, viewport, camera));
+				dispose();
 			}
 		});
 	}
